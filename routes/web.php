@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ArsipController;
 use App\Http\Controllers\CatatanPerkaraController;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\DashboardChatController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentsController;
 use App\Http\Controllers\FrontendController;
@@ -39,19 +41,27 @@ Route::get('/search', [FrontendController::class, 'search'])->name('frontend.sea
 // Route::get('/details/{slug}', [FrontendController::class, 'details'])->name('details');
 
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
-    // Route::get('/cart', [FrontendController::class, 'cart'])->name('cart');
-    // Route::post('/cart/{id}', [FrontendController::class, 'cartAdd'])->name('cart-add');
-    // Route::delete('/cart/{id}', [FrontendController::class, 'cartDelete'])->name('cart-delete');
-    // Route::post('/checkout', [FrontendController::class, 'checkout'])->name('checkout');
-    // Route::get('/checkout/success', [FrontendController::class, 'success'])->name('checkout-success');
+    Route::post('/chat/send', [ChatController::class, 'sendMessage']);
+
+    Route::get('/get-messages', [ChatController::class, 'getMessages']);
+
+
 
 
     Route::name('dashboard.')->prefix('dashboard')->group(function () {
 
 
-
         Route::middleware(['admin'])->group(function () {
+
             Route::get('/', [DashboardController::class, 'index'])->name('index');
+
+
+            Route::get('/chat', [DashboardChatController::class, 'index'])->name('dashboard.chat.index');
+            Route::get('/chat/messages/{userId}', [DashboardChatController::class, 'getMessages']);
+            Route::post('/chat/send', [DashboardChatController::class, 'sendMessage']);
+
+
+
             Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan-index');
             Route::get('/laporan/{perkara}', [LaporanController::class, 'details'])->name('laporan-details');
 

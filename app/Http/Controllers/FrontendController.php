@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Dokumen;
 use App\Models\JenisDokumen;
+use App\Models\Message;
 use Illuminate\Http\Request;
 
 class FrontendController extends Controller
@@ -38,6 +39,41 @@ class FrontendController extends Controller
         // Kembalikan ke tampilan dengan hasil pencarian
         return view('pages.frontend.index', compact('searchResults', 'jenisDokumen'));
     }
+
+
+
+    public function send(Request $request)
+    {
+        $request->validate(['message' => 'required|string', 'receiver_id' => 'required|exists:users,id']);
+
+        $message = Message::create([
+            'sender_id' => auth()->id() ?? session()->getId(),
+            'receiver_id' => $request->receiver_id,  // Menambahkan receiver_id
+            'message' => $request->message,
+            'is_admin' => auth()->check() && auth()->user()->roles === 'ADMIN',
+        ]);
+
+        return response()->json([
+            'status' => 'sent',
+            'message' => $message // Kirim pesan yang baru saja disimpan
+        ]);
+    }
+
+
+
+    public function getMessages()
+    {
+        // Pastikan untuk mendapatkan pesan hanya antara pengirim dan penerima yang sesuai
+        $messages = Message::where(function ($query) {
+            $query->where('sender_id', auth()->id())
+                ->orWhere('receiver_id', auth()->id());
+        })
+        ->with('sender')  // Mengambil informasi pengirim
+        ->get();
+
+        return response()->json(['messages' => $messages]);
+    }
+
 
 
 

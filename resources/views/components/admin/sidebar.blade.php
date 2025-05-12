@@ -65,11 +65,15 @@
                     </a>
                 </li>
 
-
-                <li class="nav-small-cap">
-                    <i class="mdi mdi-dots-horizontal"></i>
-                    <span class="hide-menu">Menu Laporan</span>
+                <li class="sidebar-item">
+                    <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                        href="{{route('dashboard.dashboard.chat.index')}}" aria-expanded="false">
+                        <i class="ti-comment"></i>
+                        <span class="hide-menu"> Chat User </span>
+                    </a>
                 </li>
+
+
 
                 <li class="sidebar-item">
                     <a class="sidebar-link waves-effect waves-dark sidebar-link"

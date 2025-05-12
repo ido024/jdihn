@@ -23,10 +23,25 @@
                         <li><a href="contact.html">FAQ</a></li>
                         <li>
                             <div class="main-white-button">
-                                @if(Auth::check() && Auth::user()->roles == 'ADMIN')
-                                <a href="{{ route('dashboard.index') }}"><i class="fa fa-dashboard"></i> Dashboard</a>
+                                @if(Auth::check())
+                                @if(Auth::user()->roles == 'ADMIN')
+                                <a href="{{ route('dashboard.index') }}">
+                                    <i class="fa fa-dashboard"></i> Dashboard
+                                </a>
                                 @else
-                                <a href="{{ route('login') }}"><i class="fa fa-sign-in"></i> Login</a>
+                                <a href="{{ route('logout') }}"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <i class="fa fa-sign-out"></i> Logout
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    style="display: none;">
+                                    @csrf
+                                </form>
+                                @endif
+                                @else
+                                <a href="{{ route('login') }}">
+                                    <i class="fa fa-sign-in"></i> Login
+                                </a>
                                 @endif
                             </div>
                         </li>
