@@ -129,48 +129,60 @@
     let messageInterval = null;
     
     // Event listener global untuk tombol enter
-    document.addEventListener('DOMContentLoaded', function () {
-        const chatInput = document.getElementById('chat-input');
-        chatInput.addEventListener('keydown', function (event) {
-            if (event.key === 'Enter' && !event.shiftKey) {
-                event.preventDefault(); // Mencegah newline pada textarea
-                sendMessage();
-            }
-        });
+    // Pastikan ini hanya dieksekusi sekali setelah halaman dimuat
+document.addEventListener('DOMContentLoaded', function () {
+    const chatInput = document.getElementById('chat-input');
+    
+    chatInput.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault(); // Mencegah newline pada textarea
+            sendMessage();
+        }
     });
+});
+
     
     // Fungsi untuk memulai chat
-    function loadChat(userId) {
-        const rightPart = document.getElementById('right-part');
-        const chatInput = document.getElementById('chat-input');
-        const sendButton = document.getElementById('send-button');
-    
-        // Tampilkan area chat
-        rightPart.style.display = 'block';
-        document.getElementById('current-user-id').value = userId;
-        currentUserId = userId;
-    
-        // Hentikan polling sebelumnya jika ada
-        if (messageInterval) clearInterval(messageInterval);
-    
-        // Load pesan pertama kali
-        loadMessages(userId);
-    
-        // Mulai polling setiap 3 detik
-        messageInterval = setInterval(() => loadMessages(userId), 3000);
-    
-        // Aktifkan input dan tombol kirim
-        chatInput.disabled = false;
-        sendButton.disabled = false;
-        scrollToBottom();
-        
+   // Fungsi untuk memulai chat
+function loadChat(userId) {
+    const rightPart = document.getElementById('right-part');
+    const chatInput = document.getElementById('chat-input');
+    const sendButton = document.getElementById('send-button');
+
+    // Tampilkan area chat
+    rightPart.style.display = 'block';
+    document.getElementById('current-user-id').value = userId;
+    currentUserId = userId;
+
+    // Hentikan polling sebelumnya jika ada
+    if (messageInterval) {
+        clearInterval(messageInterval);
+        messageInterval = null; // Pastikan interval benar-benar dihapus
     }
+
+    // Kosongkan chat list sebelum memuat pesan baru
+    const chatList = document.getElementById('chat-list');
+    chatList.innerHTML = '';
+
+    // Load pesan pertama kali
+    loadMessages(userId);
+
+    // Mulai polling setiap 3 detik
+    messageInterval = setInterval(() => loadMessages(userId), 3000);
+
+    // Aktifkan input dan tombol kirim
+    chatInput.disabled = false;
+    sendButton.disabled = false;
+    scrollToBottom();
+}
+
     
     // Fungsi untuk memuat pesan-pesan baru
   // Fungsi untuk memuat pesan-pesan baru
+// Fungsi untuk memuat pesan-pesan baru
 function loadMessages(userId) {
     const loadingIndicator = document.getElementById('loading-indicator');
-    loadingIndicator.style.display = 'block';  // Tampilkan loading indicator
+    loadingIndicator.style.display = 'block';
 
     const lastMessageTime = document.getElementById('chat-list').lastElementChild?.dataset.timestamp || 0;
 
@@ -178,57 +190,53 @@ function loadMessages(userId) {
         .then(response => response.json())
         .then(data => {
             const chatList = document.getElementById('chat-list');
-            let newMessages = '';
             let lastSenderId = null;
 
-            if (data.messages.length > 0) {
-                data.messages.forEach(message => {
-                    const isAdmin = message.is_admin ? 'odd' : '';
-                    const senderProfileUrl = message.sender?.profile_photo_url || 'https://via.placeholder.com/150';
+            data.messages.forEach(message => {
+                // Periksa apakah pesan ini sudah ada di chat list
+                if (document.querySelector(`[data-timestamp="${message.created_at}"]`)) {
+                    return;
+                }
 
-                    // Cek apakah pengirimnya sama dengan pengirim sebelumnya
-                    if (message.sender_id === lastSenderId) {
-                        // Gabungkan pesan jika pengirim sama
-                        newMessages += `
-                            <li class="chat-item ${isAdmin}" data-timestamp="${message.created_at}">
-                                <div class="chat-content">
-                                    <div class="box bg-light-info">${message.message}</div>
-                                </div>
-                                <div class="chat-time">${new Date(message.created_at).toLocaleTimeString()}</div>
-                            </li>`;
-                    } else {
-                        // Pisahkan pesan jika pengirim berbeda
-                        newMessages += `
-                            <li class="chat-item ${isAdmin}" data-timestamp="${message.created_at}">
-                                <div class="chat-img">
-                                    <img src="${senderProfileUrl}" alt="user">
-                                </div>
-                                <div class="chat-content">
-                                    <h6 class="font-medium">${message.sender?.name || 'Unknown User'}</h6>
-                                    <div class="box bg-light-info">${message.message}</div>
-                                </div>
-                                <div class="chat-time">${new Date(message.created_at).toLocaleTimeString()}</div>
-                            </li>`;
-                    }
+                const isAdmin = message.is_admin ? 'odd' : '';
+                const senderProfileUrl = message.sender?.profile_photo_url || 'https://via.placeholder.com/150';
 
-                    // Update last sender ID
-                    lastSenderId = message.sender_id;
-                });
+                if (message.sender_id === lastSenderId) {
+                    // Gabungkan pesan jika pengirim sama
+                    chatList.innerHTML += `
+                        <li class="chat-item ${isAdmin}" data-timestamp="${message.created_at}">
+                            <div class="chat-content">
+                                <div class="box bg-light-info">${message.message}</div>
+                            </div>
+                            <div class="chat-time">${new Date(message.created_at).toLocaleTimeString()}</div>
+                        </li>`;
+                } else {
+                    // Pisahkan pesan jika pengirim berbeda
+                    chatList.innerHTML += `
+                        <li class="chat-item ${isAdmin}" data-timestamp="${message.created_at}">
+                            <div class="chat-img">
+                                <img src="${senderProfileUrl}" alt="user">
+                            </div>
+                            <div class="chat-content">
+                                <h6 class="font-medium">${message.sender?.name || 'Unknown User'}</h6>
+                                <div class="box bg-light-info">${message.message}</div>
+                            </div>
+                            <div class="chat-time">${new Date(message.created_at).toLocaleTimeString()}</div>
+                        </li>`;
+                }
 
-                chatList.innerHTML += newMessages;
-            } else {
-                chatList.innerHTML = '<li class="text-center text-muted">No messages yet</li>';
-            }
+                lastSenderId = message.sender_id;
+            });
 
-            // Hide loading indicator after messages are loaded
             loadingIndicator.style.display = 'none';
             scrollToBottom();
         })
         .catch(error => {
             alert("Failed to load messages. Please try again.");
-            loadingIndicator.style.display = 'none';  // Hide loading indicator on error
+            loadingIndicator.style.display = 'none';
         });
 }
+
 
     
     // Fungsi untuk scroll ke bawah otomatis setelah pesan baru dimuat
@@ -238,55 +246,64 @@ function loadMessages(userId) {
     }
     
     
-    // Fungsi untuk mengirim pesan
-    function sendMessage() {
-        const input = document.getElementById('chat-input');
-        const message = input.value.trim();
-        const userId = document.getElementById('current-user-id').value;
-    
-        if (!message || !userId) return;
-    
-        fetch('/dashboard/chat/send', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({
-                message: message,
-                user_id: userId,
-                receiver_id: userId
-            })
+  // Fungsi untuk mengirim pesan
+function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const message = input.value.trim();
+    const userId = document.getElementById('current-user-id').value;
+    const sendButton = document.getElementById('send-button');
+
+    // Cegah pengiriman pesan kosong
+    if (!message || !userId) return;
+
+    // Nonaktifkan tombol kirim sementara
+    sendButton.disabled = true;
+
+    fetch('/dashboard/chat/send', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({
+            message: message,
+            user_id: userId,
+            receiver_id: userId
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                const chatList = document.getElementById('chat-list');
-                const currentTime = new Date().toLocaleTimeString();
-                const isAdminMessage = data.message.is_admin ? 'odd' : '';  // Menandakan apakah pesan admin
-    
-                const senderProfileUrl = data.message.sender?.profile_photo_url || 'https://via.placeholder.com/150';  // Pengecekan nullish coalescing
-    
-                chatList.innerHTML += `
-                    <li class="chat-item ${isAdminMessage}" data-timestamp="${Date.now()}">
-                        <div class="chat-img">
-                            <img src="${senderProfileUrl}" alt="user">
-                        </div>
-                        <div class="chat-content">
-                            <div class="box bg-light-inverse">${message}</div>
-                        </div>
-                        <div class="chat-time">${currentTime}</div>
-                    </li>`;
-    
-                // Scroll ke bawah setelah pesan ditambahkan
-                scrollToBottom();
-                input.value = ''; // Kosongkan input setelah kirim pesan
-            }
-        })
-        .catch(error => {
-            alert("Failed to send message. Please try again.");
-        });
-    }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const chatList = document.getElementById('chat-list');
+            const currentTime = new Date().toLocaleTimeString();
+            const isAdminMessage = data.message.is_admin ? 'odd' : '';
+
+            const senderProfileUrl = data.message.sender?.profile_photo_url || 'https://via.placeholder.com/150';
+
+            chatList.innerHTML += `
+                <li class="chat-item ${isAdminMessage}" data-timestamp="${Date.now()}">
+                    <div class="chat-img">
+                        <img src="${senderProfileUrl}" alt="user">
+                    </div>
+                    <div class="chat-content">
+                        <div class="box bg-light-inverse">${message}</div>
+                    </div>
+                    <div class="chat-time">${currentTime}</div>
+                </li>`;
+
+            scrollToBottom();
+            input.value = ''; // Kosongkan input setelah kirim pesan
+        }
+    })
+    .catch(error => {
+        alert("Failed to send message. Please try again.");
+    })
+    .finally(() => {
+        // Aktifkan kembali tombol kirim
+        sendButton.disabled = false;
+    });
+}
+
 </script>
 
 @endsection

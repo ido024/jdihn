@@ -42,7 +42,7 @@ Route::get('/search', [FrontendController::class, 'search'])->name('frontend.sea
 
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::post('/chat/send', [ChatController::class, 'sendMessage']);
-
+    
     Route::get('/get-messages', [ChatController::class, 'getMessages']);
 
 
