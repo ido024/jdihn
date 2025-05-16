@@ -71,18 +71,21 @@
                                                         {{-- Metadata --}}
                                                         <div class="d-flex flex-wrap mb-3 small text-muted">
                                                             <div class="me-4">
-                                                                <strong>Status:</strong> <span
-                                                                    class="badge bg-success">Berlaku</span>
+                                                                <strong>Status:</strong>
+                                                                <span
+                                                                    class="badge bg-success">{{ $dokumen->status ?? '-' }}</span>
                                                             </div>
                                                             <div class="me-4">
-                                                                <strong>Ditetapkan:</strong> <span
-                                                                    class="text-dark fw-normal">09 Okt
-                                                                    2024</span>
+                                                                <strong>Ditetapkan:</strong>
+                                                                <span class="text-dark fw-normal">
+                                                                    {{ $dokumen->tgl_penetapan }}
+                                                                </span>
                                                             </div>
                                                             <div>
-                                                                <strong>Diundangkan:</strong> <span
-                                                                    class="text-dark fw-normal">09 Okt
-                                                                    2024</span>
+                                                                <strong>Diundangkan:</strong>
+                                                                <span class="text-dark fw-normal">
+                                                                    {{ $dokumen->tgl_penetapan }}
+                                                                </span>
                                                             </div>
                                                         </div>
 
@@ -95,13 +98,7 @@
 
                                                         {{-- Deskripsi --}}
                                                         <p class="mb-0 text-medium" style="font-size: 14px;">
-                                                            Peraturan Daerah No. 9 Tahun 2024 tentang
-                                                            Perubahan Atas Peraturan Daerah Kota Jambi
-                                                            Nomor 2 Tahun 2022
-                                                            Tentang Penambahan Penyertaan Modal
-                                                            Pemerintah Kota Jambi Pada PT. Bank
-                                                            Pembangunan Daerah Jambi
-                                                            (Perseroda).
+                                                            {!! $dokumen->text_document !!}
                                                         </p>
                                                     </div>
                                                 </div>
