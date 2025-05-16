@@ -36,7 +36,7 @@ return new class extends Migration
             $table->unsignedInteger('size_abstrak')->nullable();
 
 
-
+            
 
             $table->softDeletes();
             $table->timestamps();

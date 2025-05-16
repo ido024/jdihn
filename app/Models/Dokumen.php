@@ -32,6 +32,8 @@ class Dokumen extends Model
         'size_document',
         'type_abstrak',
         'size_abstrak',
+        'text_document',
+        'kata_kunci'
     ];
 
     public function jenisDokumen()
