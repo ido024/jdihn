@@ -7,6 +7,7 @@ use App\Models\Dokumen;
 use App\Models\JenisDokumen;
 use App\Models\Perkara;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class DocumentsController extends Controller
@@ -116,16 +117,88 @@ class DocumentsController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $dokumen = Dokumen::findOrFail($id);
+        $jenisDocuments = JenisDokumen::all(); // pastikan kamu punya model JenisDokumen
+        return view('pages.documents.edit', compact('dokumen', 'jenisDocuments'));
     }
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = Validator::make($request->all(), [
+            'jenis_dokuemn_id' => 'required',
+            'judul' => 'required|string|max:255',
+            'nomor' => 'required|string|max:255',
+            'tahun' => 'required|integer',
+            'subyek' => 'nullable|string|max:255',
+            'tgl_penetapan' => 'nullable|date',
+            'status' => 'required|in:berlaku,tidak berlaku,diperiksa',
+            'penandatanganan' => 'nullable|string|max:255',
+            'singkatan_jenis' => 'nullable|string|max:255',
+            'tempat_terbit' => 'nullable|string|max:255',
+            'asal_dokumen' => 'nullable|string|max:255',
+            'sumber' => 'nullable|string|max:255',
+            'bahasa' => 'nullable|string|max:255',
+            'teu' => 'nullable|string|max:255',
+            'kata_kunci' => 'nullable|string|max:255',
+            'text_document' => 'nullable|string|max:255',
+            'document' => 'nullable|file|mimes:pdf,doc,docx|max:10240',
+            'abstrak' => 'nullable|file|mimes:pdf,doc,docx|max:10240',
+        ]);
+
+        if ($validated->fails()) {
+            return redirect()->back()->withErrors($validated)->withInput();
+        }
+
+        $dokumen = Dokumen::findOrFail($id);
+        $dokumen->jenis_dokuemn_id = $request->jenis_dokuemn_id;
+        $dokumen->judul = $request->judul;
+        $dokumen->nomor = $request->nomor;
+        $dokumen->tahun = $request->tahun;
+        $dokumen->subyek = $request->subyek;
+        $dokumen->status = $request->status;
+        $dokumen->tgl_penetapan = $request->tgl_penetapan;
+        $dokumen->penandatanganan = $request->penandatanganan;
+        $dokumen->singkatan_jenis = $request->singkatan_jenis;
+        $dokumen->tempat_terbit = $request->tempat_terbit;
+        $dokumen->asal_dokumen = $request->asal_dokumen;
+        $dokumen->sumber = $request->sumber;
+        $dokumen->bahasa = $request->bahasa;
+        $dokumen->text_document = $request->text_document;
+        $dokumen->kata_kunci = $request->kata_kunci;
+        $dokumen->teu = $request->teu;
+
+        // Update dokumen file jika ada
+        if ($request->hasFile('document')) {
+            // Hapus file lama kalau ada
+            if ($dokumen->document) {
+                Storage::disk('public')->delete($dokumen->document);
+            }
+            $fileDokumen = $request->file('document');
+            $dokumen->document = $fileDokumen->storeAs('dokumen_files', time() . '_dokumen.' . $fileDokumen->getClientOriginalExtension(), 'public');
+            $dokumen->type_document = $fileDokumen->getClientMimeType();
+            $dokumen->size_document = $fileDokumen->getSize();
+        }
+
+        // Update abstrak file jika ada
+        if ($request->hasFile('abstrak')) {
+            if ($dokumen->abstrak) {
+                Storage::disk('public')->delete($dokumen->abstrak);
+            }
+            $fileAbstrak = $request->file('abstrak');
+            $dokumen->abstrak = $fileAbstrak->storeAs('dokumen_abstrak', time() . '_abstrak.' . $fileAbstrak->getClientOriginalExtension(), 'public');
+            $dokumen->type_abstrak = $fileAbstrak->getClientMimeType();
+            $dokumen->size_abstrak = $fileAbstrak->getSize();
+        }
+
+        $dokumen->save();
+
+        return redirect()->route('dashboard.documents.index')->with('success', 'Dokumen berhasil diperbarui');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -133,10 +206,10 @@ class DocumentsController extends Controller
     public function destroy(string $id)
     {
         // Hapus data arsip
-        $arsip = ArsipPerkara::findOrFail($id);
+        $arsip = Dokumen::findOrFail($id);
         $arsip->delete();
 
         // Redirect dengan pesan sukses
-        return redirect()->route('dashboard.arsip.index')->with('success', 'Data arsip berhasil dihapus');
+        return redirect()->route('dashboard.documents.index')->with('success', 'Data arsip berhasil dihapus');
     }
 }

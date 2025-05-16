@@ -32,8 +32,10 @@
 <div class="row">
     <div class="col-sm-12 col-lg-12">
         <div class="card">
-            <form action="{{route('dashboard.documents.store')}}" method="POST" enctype="multipart/form-data">
+            <form action="{{route('dashboard.documents.update', $dokumen->id)}}" method="POST"
+                enctype="multipart/form-data">
                 @csrf
+                @method('put')
                 <div class="card-body">
                     <h4 class="card-title">Buat Data Arsip</h4>
                     <div class="alert alert-info alert-dismissible fade show" role="alert">
@@ -55,14 +57,14 @@
                                     <i class="fas fa-file-alt"></i> Pilih Jenis Dokumen
                                 </label>
                                 <div class="input-group">
-                                    <select class="select2 form-control custom-select" name="jenis_dokuemn_id"
-                                        style="width: 100%;">
-                                        <option value="">Cari Jenis Dokumen</option>
-                                        <optgroup label="Jenis Dokumen">
-                                            @foreach ($jenisDocuments as $jenisDocument)
-                                            <option value="{{ $jenisDocument->id }}">{{ $jenisDocument->nama }}</option>
-                                            @endforeach
-                                        </optgroup>
+                                    <select name="jenis_dokuemn_id" class="form-control">
+                                        <option value="">Pilih Jenis Dokumen</option>
+                                        @foreach ($jenisDocuments as $jenisDocument)
+                                        <option value="{{ $jenisDocument->id }}"
+                                            {{ old('jenis_dokuemn_id', $dokumen->jenis_dokuemn_id ?? '') == $jenisDocument->id ? 'selected' : '' }}>
+                                            {{ $jenisDocument->nama }}
+                                        </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -79,7 +81,7 @@
                                         <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                     </div>
                                     <input type="date" class="form-control" name="tgl_penetapan"
-                                        placeholder="Pilih Tanggal Penetapan">
+                                        value="{{$dokumen->tgl_penetapan}}">
                                 </div>
                             </div>
                         </div>
@@ -90,7 +92,7 @@
                                 <label class="control-label col-form-label">
                                     <i class="fas fa-heading"></i> Judul
                                 </label>
-                                <input type="text" class="form-control" name="judul"
+                                <input type="text" class="form-control" name="judul" value="{{$dokumen->judul}}"
                                     placeholder="Masukkan Judul Dokumen">
                             </div>
                         </div>
@@ -101,7 +103,7 @@
                                 <label class="control-label col-form-label">
                                     <i class="fas fa-hashtag"></i> Nomor
                                 </label>
-                                <input type="text" class="form-control" name="nomor"
+                                <input type="text" class="form-control" name="nomor" value="{{$dokumen->nomor}}"
                                     placeholder="Masukkan Nomor Dokumen">
                             </div>
                         </div>
@@ -112,7 +114,7 @@
                                 <label class="control-label col-form-label">
                                     <i class="fas fa-calendar"></i> Tahun
                                 </label>
-                                <input type="number" class="form-control" name="tahun"
+                                <input type="number" class="form-control" name="tahun" value="{{$dokumen->tahun}}"
                                     placeholder="Masukkan Tahun Dokumen">
                             </div>
                         </div>
@@ -123,7 +125,7 @@
                                 <label class="control-label col-form-label">
                                     <i class="fas fa-user"></i> Subyek
                                 </label>
-                                <input type="text" class="form-control" name="subyek"
+                                <input type="text" class="form-control" name="subyek" value="{{$dokumen->subyek}}"
                                     placeholder="Masukkan Subyek Dokumen">
                             </div>
                         </div>
@@ -135,9 +137,13 @@
                                     <i class="fas fa-info-circle"></i> Status
                                 </label>
                                 <select class="form-control" name="status">
-                                    <option value="berlaku">Berlaku</option>
-                                    <option value="tidak berlaku">Tidak Berlaku</option>
-                                    <option value="diperiksa">Diperiksa</option>
+                                    <option value="berlaku" {{ $dokumen->status == 'berlaku' ? 'selected' : '' }}>
+                                        Berlaku</option>
+                                    <option value="tidak berlaku"
+                                        {{ $dokumen->status == 'tidak berlaku' ? 'selected' : '' }}>
+                                        Tidak Berlaku</option>
+                                    <option value="diperiksa" {{ $dokumen->status == 'diperiksa' ? 'selected' : '' }}>
+                                        Diperiksa</option>
                                 </select>
                             </div>
                         </div>
@@ -149,7 +155,7 @@
                                     <i class="fas fa-pencil-alt"></i> Penandatangan
                                 </label>
                                 <input type="text" class="form-control" name="penandatanganan"
-                                    placeholder="Masukkan Nama Penandatangan">
+                                    value="{{$dokumen->penandatanganan }}" placeholder="Masukkan Nama Penandatangan">
                             </div>
                         </div>
 
@@ -160,7 +166,7 @@
                                     <i class="fas fa-font"></i> Singkatan Jenis
                                 </label>
                                 <input type="text" class="form-control" name="singkatan_jenis"
-                                    placeholder="Masukkan Singkatan Jenis">
+                                    value="{{$dokumen->singkatan_jenis }}" placeholder="Masukkan Singkatan Jenis">
                             </div>
                         </div>
 
@@ -171,7 +177,7 @@
                                     <i class="fas fa-map-marker-alt"></i> Tempat Terbit
                                 </label>
                                 <input type="text" class="form-control" name="tempat_terbit"
-                                    placeholder="Masukkan Tempat Terbit">
+                                    value="{{$dokumen->tempat_terbit }}" placeholder="Masukkan Tempat Terbit">
                             </div>
                         </div>
 
@@ -182,7 +188,7 @@
                                     <i class="fas fa-archive"></i> Asal Dokumen
                                 </label>
                                 <input type="text" class="form-control" name="asal_dokumen"
-                                    placeholder="Masukkan Asal Dokumen">
+                                    value="{{$dokumen->asal_dokumen }}" placeholder="Masukkan Asal Dokumen">
                             </div>
                         </div>
 
@@ -192,7 +198,7 @@
                                 <label class="control-label col-form-label">
                                     <i class="fas fa-bookmark"></i> Sumber
                                 </label>
-                                <input type="text" class="form-control" name="sumber"
+                                <input type="text" class="form-control" name="sumber" value="{{$dokumen->sumber }}"
                                     placeholder="Masukkan Sumber Dokumen">
                             </div>
                         </div>
@@ -203,7 +209,7 @@
                                 <label class="control-label col-form-label">
                                     <i class="fas fa-language"></i> Bahasa
                                 </label>
-                                <input type="text" class="form-control" name="bahasa"
+                                <input type="text" class="form-control" name="bahasa" value="{{$dokumen->bahasa }}"
                                     placeholder="Masukkan Bahasa Dokumen">
                             </div>
                         </div>
@@ -214,12 +220,10 @@
                                 <label class="control-label col-form-label">
                                     <i class="fas fa-users"></i> TEU (Nama Badan / Orang)
                                 </label>
-                                <input type="text" class="form-control" name="teu" placeholder="Masukkan TEU">
+                                <input type="text" class="form-control" name="teu" value="{{$dokumen->teu }}"
+                                    placeholder="Masukkan TEU">
                             </div>
                         </div>
-
-                        {{-- Abstrak --}}
-
 
                         {{-- Upload File --}}
                         <div class="card mt-3 col-12 rounded shadow-sm">
@@ -228,31 +232,48 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
+                                    {{-- Upload Dokumen --}}
                                     <div class="col-md-6 pt-2">
                                         <div class="form-group">
-                                            <label for="dokumen" class="control-label col-form-label">
+                                            <label for="document" class="control-label col-form-label">
                                                 <i class="mdi mdi-file-outline"></i> Dokumen
                                             </label>
+                                            @if(!empty($dokumen->document))
+                                            <p class="mb-1">
+                                                <strong>File saat ini:</strong>
+                                                <a href="{{ asset('storage/' . $dokumen->document) }}"
+                                                    target="_blank">Lihat Dokumen</a>
+                                            </p>
+                                            @endif
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="mdi mdi-upload"></i></span>
                                                 </div>
                                                 <input type="file" class="form-control rounded" id="document"
-                                                    name="document" placeholder="Upload File Dokumen">
+                                                    name="document">
                                             </div>
                                         </div>
                                     </div>
+
+                                    {{-- Upload Abstrak --}}
                                     <div class="col-md-6 pt-2">
                                         <div class="form-group">
                                             <label for="abstrak" class="control-label col-form-label">
                                                 <i class="mdi mdi-file-outline"></i> Abstrak
                                             </label>
+                                            @if(!empty($dokumen->abstrak))
+                                            <p class="mb-1">
+                                                <strong>File saat ini:</strong>
+                                                <a href="{{ asset('storage/' . $dokumen->abstrak) }}"
+                                                    target="_blank">Lihat Abstrak</a>
+                                            </p>
+                                            @endif
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="mdi mdi-upload"></i></span>
                                                 </div>
                                                 <input type="file" class="form-control rounded" id="abstrak"
-                                                    name="abstrak" placeholder="Upload Abstrak">
+                                                    name="abstrak">
                                             </div>
                                         </div>
                                     </div>
@@ -266,6 +287,7 @@
                                     <i class="fas fa-users"></i> Kata Kunci
                                 </label>
                                 <input type="text" class="form-control" name="kata_kunci"
+                                    value="{{ old('kata_kunci', $dokumen->kata_kunci ?? '') }}"
                                     placeholder="Masukkan Kata Kunci">
                             </div>
                         </div>
@@ -276,7 +298,7 @@
                                     <i class="fas fa-users"></i> Text Document
                                 </label>
                                 <textarea class="form-control" id="text_document" name="text_document" rows="5"
-                                    placeholder="Masukkan Kata Kunci"></textarea>
+                                    placeholder="Masukkan Konten Dokumen">{{ old('text_document', $dokumen->text_document ?? '') }}</textarea>
                             </div>
                         </div>
 
@@ -292,13 +314,13 @@
                     <div class="action-form">
                         <div class="form-group m-b-0 text-left">
                             <button type="submit" class="btn btn-info waves-effect waves-light">Save</button>
-                            <button type="submit" class="btn btn-dark waves-effect waves-light">Cancel</button>
+                            <a href="{{ route('dashboard.documents.index') }}"
+                                class="btn btn-dark waves-effect waves-light">Cancel</a>
                         </div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-
 </div>
 @endsection

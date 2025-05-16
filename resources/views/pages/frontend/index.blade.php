@@ -10,45 +10,43 @@
                     <h2>JARINGAN DOKUMENTASI DAN INFORMASI HUKUM</h2>
                 </div>
             </div>
-            <div class="col-lg-12">
-                <form id="search-form" name="gs" method="GET" action="{{ route('index') }}">
-                    @csrf
-                    <div class="row">
-                        <div class="col-lg-3 align-self-center">
-                            <fieldset>
-                                <select name="area" class="form-select" aria-label="Area" id="chooseCategory">
-                                    <option selected disabled>Jenis Dokumen</option>
-                                    @foreach ($jenisDokumen as $jenis)
-                                    <option value="{{ $jenis->nama }}">{{ $jenis->nama }}</option>
-                                    @endforeach
-                                </select>
-                            </fieldset>
+            <div class="col-lg-12 d-flex justify-content-center">
+                <div class="search-card p-4 shadow-sm rounded" style="max-width: 900px; width: 100%; background: #fff;">
+                    <form id="search-form" name="gs" method="GET" action="{{ route('index') }}">
+                        @csrf
+                        <div class="d-flex flex-wrap gap-3">
+                            <select name="area" class="form-select flex-grow-1" aria-label="Area"
+                                style="min-width: 150px;">
+                                <option selected disabled>Jenis Dokumen</option>
+                                @foreach ($jenisDokumen as $jenis)
+                                <option value="{{ $jenis->nama }}">{{ $jenis->nama }}</option>
+                                @endforeach
+                            </select>
+
+                            <input type="number" name="nomor" class="form-control flex-grow-1" placeholder="Nomor"
+                                autocomplete="on" style="min-width: 150px;">
+
+                            <select name="tahun" class="form-select flex-grow-1" aria-label="Tahun"
+                                style="min-width: 150px;">
+                                <option selected disabled>Tahun</option>
+                                @for ($year = 2025; $year >= 2000; $year--)
+                                <option value="{{ $year }}">{{ $year }}</option>
+                                @endfor
+                            </select>
+
+                            <input type="text" name="kata_kunci" class="form-control flex-grow-1"
+                                placeholder="Kata Kunci 1" autocomplete="on" style="min-width: 150px;">
                         </div>
-                        <div class="col-lg-3 align-self-center">
-                            <fieldset>
-                                <input type="number" name="nomor" class="searchText" placeholder="Nomor"
-                                    autocomplete="on">
-                            </fieldset>
+
+                        <div class="text-end mt-4">
+                            <button type="submit" class="btn btn-primary px-4 py-2">
+                                <i class="fa fa-search me-2"></i> Cari
+                            </button>
                         </div>
-                        <div class="col-lg-3 align-self-center">
-                            <fieldset>
-                                <select name="tahun" class="form-select" aria-label="Default select example"
-                                    id="chooseCategory">
-                                    <option selected disabled>Tahun</option>
-                                    @for ($year = 2025; $year >= 2000; $year--)
-                                    <option value="{{ $year }}">{{ $year }}</option>
-                                    @endfor
-                                </select>
-                            </fieldset>
-                        </div>
-                        <div class="col-lg-3">
-                            <fieldset>
-                                <button class="main-button"><i class="fa fa-search"></i> Cari</button>
-                            </fieldset>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
+
 
             {{-- Menampilkan tabel hanya jika ada hasil pencarian --}}
             @if(request()->has('nomor') || request()->has('tahun') || request()->has('area'))
