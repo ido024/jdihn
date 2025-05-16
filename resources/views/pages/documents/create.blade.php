@@ -255,6 +255,31 @@
                             </div>
                         </div>
 
+                        <div class="col-md-3 pt-2">
+                            <div class="form-group">
+                                <label class="control-label col-form-label">
+                                    <i class="fas fa-users"></i> Kata Kunci
+                                </label>
+                                <input type="text" class="form-control" name="kata_kunci"
+                                    placeholder="Masukkan Kata Kunci">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 pt-2">
+                            <div class="form-group">
+                                <label class="control-label col-form-label">
+                                    <i class="fas fa-users"></i> Text Document
+                                </label>
+                                <textarea class="form-control" id="text_document" name="text_document" rows="5"
+                                    placeholder="Masukkan Kata Kunci"></textarea>
+                            </div>
+                        </div>
+
+                        <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
+                        <script>
+                            CKEDITOR.replace('text_document');
+                        </script>
+
                     </div>
                 </div>
                 <hr>

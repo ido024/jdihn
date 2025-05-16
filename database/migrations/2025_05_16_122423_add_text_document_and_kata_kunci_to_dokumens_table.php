@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('dokumens', function (Blueprint $table) {
-            $table->text('text_document')->nullable()->after('size_abstrak');
-            $table->text('kata_kunci')->nullable()->after('text_document');
+            $table->date('tgl_ditetapkan')->nullable()->after('size_abstrak');
+            $table->date('tgl_diundangkan')->nullable()->after('text_document');
         });
     }
 
     public function down(): void
     {
         Schema::table('dokumens', function (Blueprint $table) {
-            $table->dropColumn(['text_document', 'kata_kunci']);
+            $table->dropColumn(['tgl_ditetapkan', 'tgl_diundangkan']);
         });
     }
 };

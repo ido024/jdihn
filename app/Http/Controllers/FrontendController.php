@@ -33,6 +33,10 @@ class FrontendController extends Controller
             $dokumenQuery->where('tahun', $request->tahun);
         }
 
+        if ($request->filled('kata_kunci') && $request->kata_kunci !== 'kata_kunci') {
+            $dokumenQuery->where('kata_kunci', $request->kata_kunci);
+        }
+
         // Ambil hasil pencarian
         $searchResults = $dokumenQuery->get();
 
@@ -68,8 +72,8 @@ class FrontendController extends Controller
             $query->where('sender_id', auth()->id())
                 ->orWhere('receiver_id', auth()->id());
         })
-        ->with('sender')  // Mengambil informasi pengirim
-        ->get();
+            ->with('sender')  // Mengambil informasi pengirim
+            ->get();
 
         return response()->json(['messages' => $messages]);
     }

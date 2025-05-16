@@ -17,7 +17,7 @@ class DocumentsController extends Controller
     public function index()
     {
         $documents = Dokumen::all();
-        
+
         return view('pages.documents.index', compact('documents'));
     }
 
@@ -51,6 +51,8 @@ class DocumentsController extends Controller
             'sumber' => 'nullable|string|max:255',
             'bahasa' => 'nullable|string|max:255',
             'teu' => 'nullable|string|max:255',
+            'kata_kunci' => 'nullable|string|max:255',
+            'text_document' => 'nullable|string|max:255',
             'document' => 'nullable|file|mimes:pdf,doc,docx|max:10240',  // Maksimal 10MB untuk file dokumen
             'abstrak' => 'nullable|file|mimes:pdf,doc,docx|max:10240',  // Maksimal 10MB untuk file abstrak
         ]);
@@ -74,6 +76,8 @@ class DocumentsController extends Controller
         $dokumen->asal_dokumen = $request->asal_dokumen;
         $dokumen->sumber = $request->sumber;
         $dokumen->bahasa = $request->bahasa;
+        $dokumen->text_document = $request->text_document;
+        $dokumen->kata_kunci = $request->kata_kunci;
         $dokumen->teu = $request->teu;
 
         // Menyimpan file dokumen jika ada
