@@ -40,8 +40,8 @@ class FrontendController extends Controller
         $searchResults = $dokumenQuery->get();
 
         // 🔍 Ambil data untuk grafik: jumlah dokumen per jenis per tahun
-        $years = range(date('Y'), 2021); // Ubah sesuai range tahun yang diinginkan
-        $jenisList = JenisDokumen::pluck('nama'); // ["Perda", "Perwal", "SK Wali", dll]
+        $years = Dokumen::select('tahun')->distinct()->orderBy('tahun')->pluck('tahun')->toArray();
+        $jenisList = JenisDokumen::pluck('nama');
 
         $chartData = [];
 
@@ -60,9 +60,10 @@ class FrontendController extends Controller
             $chartData[] = [
                 'label' => $jenis,
                 'data' => $dataPerTahun,
-                'backgroundColor' => '#' . substr(md5($jenis), 0, 6) // warna random dari nama
+                'backgroundColor' => '#' . substr(md5($jenis), 0, 6)
             ];
         }
+
         $statistik = [
             'Peraturan Gubernur' => Dokumen::whereHas('jenisDokumen', function ($q) {
                 $q->where('nama', 'Peraturan Gubernur');
