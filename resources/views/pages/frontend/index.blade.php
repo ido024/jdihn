@@ -321,7 +321,7 @@
 
 
 
-<section style="padding: 60px 20px;">
+<section style="padding: 60px 20px;" id="berita">
     <div style="max-width: 1200px; margin: 0 auto;">
         <!-- Header -->
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">

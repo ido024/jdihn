@@ -63,9 +63,9 @@ class BeritaController extends Controller
     /**
      * Form edit berita
      */
-    public function edit(Berita $berita)
+    public function edit(Berita $beritum)
     {
-        return view('berita.edit', compact('berita'));
+        return view('pages.berita.edit', compact('beritum'));
     }
 
     /**

@@ -15,7 +15,12 @@
 
         @include('components.admin.css')
 
+        <style>
+            .cke_notifications_area {
+                display: none;
+            }
 
+        </style>
     </head>
 
     <body>
