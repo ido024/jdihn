@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArsipController;
+use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\CatatanPerkaraController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\DashboardChatController;
@@ -36,13 +37,16 @@ Route::get('/', [FrontendController::class, 'index'])->name('index');
 Route::get('/products', [FrontendController::class, 'products'])->name('products');
 Route::get('/produk/{id}', [FrontendController::class, 'productDetails'])->name('produk.detail');
 Route::get('/search', [FrontendController::class, 'search'])->name('frontend.search');
+Route::get('/berita/{id}', [FrontendController::class, 'showBerita'])->name('frontend.berita.show');
+
+
 
 // Route::get('/category/{categories_id}', [FrontendController::class, 'category'])->name('category');
 // Route::get('/details/{slug}', [FrontendController::class, 'details'])->name('details');
 
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::post('/chat/send', [ChatController::class, 'sendMessage']);
-    
+
     Route::get('/get-messages', [ChatController::class, 'getMessages']);
 
 
@@ -68,6 +72,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
             Route::resource('arsip', ArsipController::class);
 
             Route::resource('documents', DocumentsController::class);
+            Route::resource('berita', BeritaController::class);
             Route::resource('produk', ProdukController::class);
             Route::resource('jenisdocument', JenisHukumController::class);
 

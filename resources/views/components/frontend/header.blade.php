@@ -18,9 +18,7 @@
                                 class="{{ request()->routeIs('products') ? 'active' : '' }}">Produk / Dokumen
                                 Hukum</a>
                         </li>
-                        <li><a href="category.html">Profil</a></li>
-                        <li><a href="contact.html">Unduhan</a></li>
-                        <li><a href="contact.html">FAQ</a></li>
+
                         <li>
                             <div class="main-white-button">
                                 @if(Auth::check())

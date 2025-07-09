@@ -25,6 +25,12 @@
         <link rel="stylesheet" href="{{asset('../../front-end/assets/css/animated.css')}}">
         <link rel="stylesheet" href="{{asset('../../front-end/assets/css/owl.css')}}">
         <style>
+            .carousel .carousel-item {
+                transition: opacity 1.2s ease-in-out !important;
+            }
+
+        </style>
+        <style>
             .bubble {
                 padding: 8px 12px;
                 margin: 5px 0;
@@ -75,6 +81,7 @@
         <script src="{{asset('../../front-end/assets/js/imagesloaded.js')}}"></script>
         <script src="{{asset('../../front-end/assets/js/custom.js')}}"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     </body>
 

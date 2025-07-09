@@ -72,6 +72,13 @@
                         <span class="hide-menu"> Chat User </span>
                     </a>
                 </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                        href="{{route('dashboard.berita.index')}}" aria-expanded="false">
+                        <i class="ti-comment"></i>
+                        <span class="hide-menu"> Berita </span>
+                    </a>
+                </li>
 
 
 

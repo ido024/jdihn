@@ -2,33 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Berita;
 use App\Models\Dokumen;
 use App\Models\JenisDokumen;
 use App\Models\Message;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FrontendController extends Controller
 {
+
     public function index(Request $request)
     {
         $jenisDokumen = JenisDokumen::all();
 
-        // Inisialisasi query dokumen
+        // Query filter pencarian
         $dokumenQuery = Dokumen::with('jenisDokumen');
 
-        // Cek apakah ada input untuk filter jenis dokumen
         if ($request->filled('area') && $request->area !== 'Jenis Dokumen') {
             $dokumenQuery->whereHas('jenisDokumen', function ($query) use ($request) {
                 $query->where('nama', $request->area);
             });
         }
 
-        // Cek apakah ada input untuk filter nomor dokumen
         if ($request->filled('nomor')) {
             $dokumenQuery->where('nomor', 'like', '%' . $request->nomor . '%');
         }
 
-        // Cek apakah ada input untuk filter tahun dokumen
         if ($request->filled('tahun') && $request->tahun !== 'Tahun') {
             $dokumenQuery->where('tahun', $request->tahun);
         }
@@ -37,11 +37,62 @@ class FrontendController extends Controller
             $dokumenQuery->where('kata_kunci', $request->kata_kunci);
         }
 
-        // Ambil hasil pencarian
         $searchResults = $dokumenQuery->get();
 
-        // Kembalikan ke tampilan dengan hasil pencarian
-        return view('pages.frontend.index', compact('searchResults', 'jenisDokumen'));
+        // 🔍 Ambil data untuk grafik: jumlah dokumen per jenis per tahun
+        $years = range(date('Y'), 2021); // Ubah sesuai range tahun yang diinginkan
+        $jenisList = JenisDokumen::pluck('nama'); // ["Perda", "Perwal", "SK Wali", dll]
+
+        $chartData = [];
+
+        foreach ($jenisList as $jenis) {
+            $dataPerTahun = [];
+
+            foreach ($years as $year) {
+                $count = Dokumen::where('tahun', $year)
+                    ->whereHas('jenisDokumen', function ($q) use ($jenis) {
+                        $q->where('nama', $jenis);
+                    })->count();
+
+                $dataPerTahun[] = $count;
+            }
+
+            $chartData[] = [
+                'label' => $jenis,
+                'data' => $dataPerTahun,
+                'backgroundColor' => '#' . substr(md5($jenis), 0, 6) // warna random dari nama
+            ];
+        }
+        $statistik = [
+            'Peraturan Gubernur' => Dokumen::whereHas('jenisDokumen', function ($q) {
+                $q->where('nama', 'Peraturan Gubernur');
+            })->count(),
+
+            'Peraturan Daerah' => Dokumen::whereHas('jenisDokumen', function ($q) {
+                $q->where('nama', 'Peraturan Daerah');
+            })->count(),
+
+            'Naskah Akademik' => Dokumen::whereHas('jenisDokumen', function ($q) {
+                $q->where('nama', 'Naskah Akademik');
+            })->count(),
+        ];
+
+        $total = array_sum($statistik);
+
+        $dokumenTerbaru = Dokumen::with('jenisDokumen')
+            ->orderBy('created_at', 'desc')
+            ->paginate(3); // paginate 6 per halaman
+
+        $beritaTerbaru = Berita::latest()->paginate(3);
+
+
+        return view('pages.frontend.index', compact('beritaTerbaru', 'searchResults', 'jenisDokumen', 'chartData', 'years', 'statistik', 'total', 'dokumenTerbaru'));
+    }
+
+    public function showBerita($id)
+    {
+        $berita = Berita::findOrFail($id);
+        return view('pages.frontend.berita', compact('berita'));
     }
 
 
