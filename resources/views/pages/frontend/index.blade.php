@@ -13,7 +13,7 @@
                     <h1 class="display-5 fw-bold mb-4">JARINGAN DOKUMENTASI DAN INFORMASI HUKUM</h1>
                     <p class="lead mb-4 text-white">Portal informasi resmi terkait produk hukum Pemerintah Provinsi
                         Jambi. Temukan dokumen, peraturan, dan keputusan hukum terbaru dengan mudah dan cepat.</p>
-                    <a href="#produk" class="btn btn-danger btn-lg px-5 py-2 fw-semibold rounded-pill shadow-sm">
+                    <a href="#produk" class="btn btn-primary btn-lg px-5 py-2 fw-semibold rounded-pill shadow-sm">
                         🔍 Telusuri Produk Hukum
                     </a>
                 </div>
@@ -27,7 +27,7 @@
         data-bs-ride="carousel" data-bs-interval="5000" style="z-index: 0;">
         <div class="carousel-inner h-100">
             <div class="carousel-item active h-100">
-                <img src="/front-end/assets/images/bg-2.jpg" class="d-block w-100 h-100 object-fit-cover"
+                <img src="/front-end/assets/images/bg-1.jpg" class="d-block w-100 h-100 object-fit-cover"
                     alt="Background 1">
             </div>
             <div class="carousel-item h-100">
@@ -35,7 +35,7 @@
                     alt="Background 2">
             </div>
             <div class="carousel-item h-100">
-                <img src="/front-end/assets/images/bg-1.jpg" class="d-block w-100 h-100 object-fit-cover"
+                <img src="/front-end/assets/images/bg-3.jpg" class="d-block w-100 h-100 object-fit-cover"
                     alt="Background 3">
             </div>
         </div>
@@ -50,7 +50,7 @@
                 <!-- Form Pencarian -->
                 <div style="flex: 1 1 60%; max-width: 700px;">
                     <h1 style="font-size: 2.8rem; font-weight: 800; margin-bottom: 30px;">
-                        <span style="color: #ff3c2f;">CARI</span> PRODUK HUKUM
+                        <span style="color:rgb(47, 61, 255);">CARI</span> PRODUK HUKUM
                     </h1>
                     <form method="GET" action="{{ route('index') }}"
                         style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; background: rgba(0, 0, 0, 0.4); padding: 24px; border-radius: 12px;">
@@ -60,7 +60,7 @@
                         <div style="grid-column: span 2;">
                             <label for="kata_kunci">Kata Kunci</label>
                             <input type="text" name="kata_kunci" id="kata_kunci" class="form-control"
-                                placeholder="Contoh: covid-19" />
+                                placeholder="Contoh: Pemutihan" />
                         </div>
 
                         <!-- Jenis Dokumen -->
@@ -103,7 +103,7 @@
 
                         <!-- Tombol Cari -->
                         <div style="grid-column: span 2;">
-                            <button type="submit" class="btn btn-danger w-100"
+                            <button type="submit" class="btn btn-primary w-100"
                                 style="padding: 12px; font-weight: bold;">
                                 🔍 CARI
                             </button>
@@ -115,7 +115,7 @@
                 <div style="flex: 1 1 35%; text-align: center;">
                     <img src="/front-end/assets/images/logo-jambi.png" alt="Logo Kota Jambi"
                         style="max-width: 180px; margin-bottom: 20px;" />
-                    <h2 style="font-size: 1.6rem; font-weight: 600;">Bagian Hukum<br>Sekretariat Daerah Kota Jambi
+                    <h2 style="font-size: 1.6rem; font-weight: 600;">Sekretariat Daerah<br>Biro Hukum Provinsi Jambi
                     </h2>
                 </div>
             </div>
@@ -220,16 +220,16 @@
 <section style="background-color: #2d2d2d; padding: 50px 0;">
     <div style="text-align: center; color: white; margin-bottom: 40px;">
         <h2 style="font-size: 2.5rem; font-weight: bold;">
-            Statistik <span style="color: #ff3c2f;">Produk Hukum</span>
+            Statistik <span style="color: #2f44ffff;">Produk Hukum</span>
         </h2>
-        <div style="width: 100px; height: 4px; background-color: #ff3c2f; margin: 10px auto 0;"></div>
+        <div style="width: 100px; height: 4px; background-color: #2f44ffff; margin: 10px auto 0;"></div>
     </div>
 
     <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 30px;">
         @foreach($statistik as $nama => $jumlah)
         <div
             style="background-color: white; border-radius: 16px; padding: 40px 20px; width: 220px; text-align: center;">
-            <div style="font-size: 48px; color: #ff3c2f;">
+            <div style="font-size: 48px; color: #2f44ffff;">
                 @if(str_contains(strtolower($nama), 'gubernur')) 🏛️
                 @elseif(str_contains(strtolower($nama), 'daerah')) ⚖️
                 @else 📑
@@ -242,7 +242,7 @@
 
         <div
             style="background-color: white; border-radius: 16px; padding: 40px 20px; width: 220px; text-align: center;">
-            <div style="font-size: 48px; color: #ff3c2f;">📈</div>
+            <div style="font-size: 48px; color: #2f44ffff;">📈</div>
             <div style="font-size: 48px; font-weight: bold; color: #333;">{{ $total }}</div>
             <div style="color: #555; margin-top: 8px;">Total Produk Hukum</div>
         </div>
@@ -254,12 +254,12 @@
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
             <div>
                 <h2 style="font-size: 2.5rem; font-weight: bold;">
-                    <span style="color: #ff3c2f;">Produk Hukum</span> Terbaru
+                    <span style="color: #2f44ffff;">Produk Hukum</span> Terbaru
                 </h2>
-                <div style="width: 100px; height: 4px; background-color: #ff3c2f; margin-top: 8px;"></div>
+                <div style="width: 100px; height: 4px; background-color: #2f44ffff; margin-top: 8px;"></div>
             </div>
             <a href="#"
-                style="background-color: #ff3c2f; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">
+                style="background-color: #2f44ffff; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">
                 SEMUA PRODUK HUKUM →
             </a>
         </div>
@@ -271,7 +271,7 @@
                 <div
                     style="background: white; border-radius: 16px; padding: 24px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); transition: 0.3s ease;">
                     <span
-                        style="background: #ff3c2f; color: white; font-size: 13px; padding: 4px 10px; border-radius: 20px;">
+                        style="background: #2f44ffff; color: white; font-size: 13px; padding: 4px 10px; border-radius: 20px;">
                         {{ $dok->jenisDokumen->nama ?? '-' }}
                     </span>
                     <h3 style="font-size: 18px; font-weight: bold; margin-top: 12px;">
@@ -301,12 +301,12 @@
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
             <div>
                 <h2 style="font-size: 2.5rem; font-weight: bold; margin: 0;">
-                    <span style="color: #ff3c2f;">Grafik</span> Produk Hukum
+                    <span style="color: #2f44ffff;">Grafik</span> Produk Hukum
                 </h2>
-                <div style="width: 100px; height: 4px; background-color: #ff3c2f; margin-top: 8px;"></div>
+                <div style="width: 100px; height: 4px; background-color: #2f44ffff; margin-top: 8px;"></div>
             </div>
             <a href="#"
-                style="background-color: #ff3c2f; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">
+                style="background-color: #2f44ffff; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">
                 LIHAT STATISTIK LAINNYA →
             </a>
         </div>
@@ -327,12 +327,12 @@
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
             <div>
                 <h2 style="font-size: 2.5rem; font-weight: bold; margin: 0;">
-                    <span style="color: #ff3c2f;">Berita</span> Terbaru
+                    <span style="color: #2f44ffff;">Berita</span> Terbaru
                 </h2>
-                <div style="width: 100px; height: 4px; background-color: #ff3c2f; margin-top: 8px;"></div>
+                <div style="width: 100px; height: 4px; background-color: #2f44ffff; margin-top: 8px;"></div>
             </div>
             <a href="#"
-                style="background-color: #ff3c2f; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">
+                style="background-color: #2f44ffff; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">
                 SEMUA BERITA →
             </a>
         </div>
@@ -355,7 +355,7 @@
                         {{ \Illuminate\Support\Str::limit(strip_tags($berita->isi), 120) }}
                     </p>
                     <a href="{{ route('frontend.berita.show', $berita->id) }}"
-                        style="color: #ff3c2f; font-weight: 500; text-decoration: none;">
+                        style="color: #2f44ffff; font-weight: 500; text-decoration: none;">
                         Baca selengkapnya →
                     </a>
                 </div>

@@ -23,7 +23,7 @@
         <hr style="margin: 40px 0;">
 
         <div style="font-size: 15px; color: #444;">
-            <p>Tim Pengelola Website JDIH Kota Jambi</p>
+            <p>Tim Pengelola Website JDIH Provinsi Jambi</p>
         </div>
 
         <div style="margin-top: 24px;">
