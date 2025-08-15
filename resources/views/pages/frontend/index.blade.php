@@ -27,7 +27,7 @@
         data-bs-ride="carousel" data-bs-interval="5000" style="z-index: 0;">
         <div class="carousel-inner h-100">
             <div class="carousel-item active h-100">
-                <img src="/front-end/assets/images/bg-1.jpg" class="d-block w-100 h-100 object-fit-cover"
+                <img src="/public/front-end/assets/images/bg-1.jpg" class="d-block w-100 h-100 object-fit-cover"
                     alt="Background 1">
             </div>
             <div class="carousel-item h-100">
