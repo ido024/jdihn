@@ -63,7 +63,7 @@
                 <p class="mb-0 text-muted">
                     © {{ date('Y') }} Biro Hukum Setda Provinsi Jambi. Seluruh hak cipta dilindungi.
                     <br>
-                    Desain oleh <a href="https://templatemo.com" target="_blank"
+                    Desain oleh <a href="Biro Hukum Setda Provinsi Jambi" target="_blank"
                         rel="noopener noreferrer">TemplateMo</a> &mdash; Dikembangkan oleh Tim IT Biro Hukum
                 </p>
             </div>
